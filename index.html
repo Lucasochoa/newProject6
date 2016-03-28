@@ -20,13 +20,27 @@ $(document).ready(function() {
   */
 
   var piece = $("<div class='piece'></div>");
+  var protagonist1 = $("<div class='protagonist'></div>");
+  /*
   var piece1 = $("<div class='piece'></div>");
   var piece2 = $("<div class='piece'></div>");
   var piece3 = $("<div class='piece'></div>");
   var piece4 = $("<div class='piece'></div>");
   var piece5 = $("<div class='piece'></div>");
-
+  */
+  
   $(gameboard).append(piece);
+  $(gameboard).append(protagonist1);
+  
+
+  /*
+  $(gameboard).append(piece1);
+  $(gameboard).append(piece2);
+  $(gameboard).append(piece3);
+  $(gameboard).append(piece4);
+  $(gameboard).append(piece5);
+  */
+
   $(document).keydown(function(e) {
     if(e.keyCode==37) {
       // left arrow clicked
@@ -58,6 +72,15 @@ $(document).ready(function() {
   left: 0px;
   top: 0px;
 }
+.protagonist{
+  background-color: #FF0000;
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+
 </style>
 </head>
 <body>
