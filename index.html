@@ -11,13 +11,20 @@ $(document).ready(function() {
   var gameboard = $("<div id='gameboard'></div>");
   $(document.body).append(gameboard);
   var count = 0;
-
+/*
   for(i = 0; i<10; i++){
-     var piece+i = $("<div class='piece'></div>");
+     var piece = $("<div class='piece'></div>");
      if (count == 10){break;}
      count++;
   }
-  //var piece = $("<div class='piece'></div>");
+  */
+
+  var piece = $("<div class='piece'></div>");
+  var piece1 = $("<div class='piece'></div>");
+  var piece2 = $("<div class='piece'></div>");
+  var piece3 = $("<div class='piece'></div>");
+  var piece4 = $("<div class='piece'></div>");
+  var piece5 = $("<div class='piece'></div>");
 
   $(gameboard).append(piece);
   $(document).keydown(function(e) {
