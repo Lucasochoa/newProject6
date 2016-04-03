@@ -18,7 +18,7 @@
 }
 
 .collective_ship {
-	background-color: yellow;
+	background-image: url(aliens.gif);
 }
 
 .score {
@@ -29,27 +29,26 @@
 	font-size: 30px;
 	padding: 10px;
 }
-
 </style>
- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script>
 var griddim = 50;
 var visible_height = 6;
 
 var board = [
-[0, 1, 0, 0, 0],
+[1, 0, 0, 0, 0],
 [0, 1, 0, 1, 1],
-[0, 1, 0, 0, 1],
-[0, 1, 0, 0, 0],
+[0, 0, 0, 0, 1],
+[0, 0, 0, 0, 0],
 [0, 0, 0, 0, 0],
 [0, 0, 0, 1, 1],
 [0, 0, 0, 0, 1],
-[0, 0, 1, 0, 0],
+[0, 0, 0, 0, 0],
 [0, 0, 0, 0, 0],
 [0, 0, 0, 1, 1],
-[0, 0, 1, 0, 1],
+[0, 0, 0, 0, 1],
 [0, 0, 0, 0, 0],
-[0, 0, 1, 0, 0],
+[0, 0, 0, 0, 0],
 [0, 0, 0, 1, 1],
 [0, 0, 0, 0, 1],
 [0, 0, 0, 0, 0]
@@ -116,10 +115,23 @@ $(document).ready(function() {
   			if(ship_location >= visible_width) ship_location = 0;
 		}
 	});
-	
+
 	function poll() {
 		$.ajax({
-		update();
+			url: "twitchtracker.php",
+			data: {"sid": "1cac625a2362fd414244fbe3dd1b1256",
+					"ship": ship_location},
+			dataType: 'json',
+			success: function(data) {
+				$('#count').html(data.count);
+				cship_location = data.ship;
+				offset = data.offset;
+				update();
+			},
+			complete: function() {
+				setTimeout(poll, 200);
+			}
+		});
 	}
 	poll();
 
