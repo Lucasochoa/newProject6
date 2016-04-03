@@ -117,7 +117,7 @@ $(document).ready(function() {
 	});
 
 	function poll() {
-		$.ajax({
+	/*	$.ajax({
 			url: "twitchtracker.php",
 			data: {"sid": "1cac625a2362fd414244fbe3dd1b1256",
 					"ship": ship_location},
@@ -132,6 +132,8 @@ $(document).ready(function() {
 				setTimeout(poll, 200);
 			}
 		});
+	*/
+	uptdate();
 	}
 	poll();
 
