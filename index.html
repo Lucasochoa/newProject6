@@ -13,7 +13,7 @@
 }
 
 .ship {
-	background-color: red;
+	background-color: green;
 	opacity: .6;
 }
 
@@ -117,23 +117,23 @@ $(document).ready(function() {
 	});
 
 	function poll() {
-	/*	$.ajax({
+		
+		$.ajax({
 			url: "twitchtracker.php",
-			data: {"sid": "1cac625a2362fd414244fbe3dd1b1256",
+			data: {"sid": "7d63832d00f6622616ae0f5e0c633cee",
 					"ship": ship_location},
 			dataType: 'json',
 			success: function(data) {
 				$('#count').html(data.count);
 				cship_location = data.ship;
 				offset = data.offset;
-				update();
+				
 			},
 			complete: function() {
 				setTimeout(poll, 200);
 			}
 		});
-	*/
-	uptdate();
+		
 	}
 	poll();
 
