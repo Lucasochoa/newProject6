@@ -1,0 +1,197 @@
+
+<!doctype html>
+<html>
+<head>
+<title>Game Prototype</title>
+<style>
+.board {
+	background-color: #DDD;
+	border: 1px solid #000;
+}
+
+.gridcell {
+}
+
+.ship {
+	background-color: green;
+	opacity: .6;
+}
+
+.collective_ship {
+	//background-image = loadImage("aliens.gif");
+	background-image: url(aliens.gif);
+}
+
+.score {
+	position: absolute;
+	right: 20px;
+	top: 20px;
+	border: 2px solid black;
+	font-size: 30px;
+	padding: 10px;
+}
+</style>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script>
+var griddim = 50;
+var visible_height = 6;
+
+var board = [
+[1, 0, 0, 0, 0],
+[0, 1, 0, 1, 1],
+[0, 0, 0, 0, 1],
+[0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0],
+[0, 0, 0, 1, 1],
+[0, 0, 0, 0, 1],
+[0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0],
+[0, 0, 0, 1, 1],
+[0, 0, 0, 0, 1],
+[0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0],
+[0, 0, 0, 1, 1],
+[0, 0, 0, 0, 1],
+[0, 0, 0, 0, 0]
+];
+
+var visible_width = board[0].length;
+var board_width = griddim * board[0].length;
+var board_height = griddim * visible_height;
+var ship_location = 0;
+var cship_location = 0;
+
+var reward_per_turn = 0.001
+var total_reward = 0.000;
+
+var _interval = null;
+
+$(document).ready(function() {
+	var vboard = $("<div id='board' class='board'></div>");
+	vboard.width(board_width);
+	vboard.height(board_height);
+	vboard.css("position", "relative");
+	$("body").append(vboard);
+
+	for(var i=0; i<visible_height; i++) {
+		for(var j=0; j<visible_width; j++) {
+			var gridcell = $("<div class='gridcell'></div>");
+			gridcell.width(griddim);
+			gridcell.height(griddim);
+			gridcell.css("position", "absolute");
+			gridcell.css("left", (j*griddim)+"px");
+			gridcell.css("top", (i*griddim)+"px");
+			gridcell.attr("id", "cell_" + j + "_" + i)
+
+			vboard.append(gridcell);
+		}
+	}
+
+	var ship = $("<div class='ship'></div>");
+	ship.width(griddim);
+	ship.height(griddim);
+	ship.css("position", "absolute");
+	ship.css("left", (ship_location*griddim)+"px");
+	ship.css("top", ((visible_height-1)*griddim)+"px");
+	vboard.append(ship);
+
+	var cship = $("<div class='collective_ship'></div>");
+	cship.width(griddim);
+	cship.height(griddim);
+	cship.css("position", "absolute");
+	cship.css("left", (cship_location*griddim)+"px");
+	cship.css("top", ((visible_height-1)*griddim)+"px");
+	vboard.append(cship);
+
+	$(document).keydown(function(e) {
+		console.log("ship: " + ship_location + " " + e.which);
+
+		if(e.which==37) {
+  			// left arrow clicked
+  			ship_location -= 1;
+  			if(ship_location < 0) ship_location = visible_width - 1;
+		} else if(e.which == 39) {
+  			// right arrow clicked
+  			ship_location += 1;
+  			if(ship_location >= visible_width) ship_location = 0;
+		}
+	});
+
+	function poll() {
+		$.ajax({
+			url: "https://codingthecrowd.com/twitchtracker.php",
+			data: {"sid": "7d63832d00f6622616ae0f5e0c633cee",
+					"ship": ship_location},
+			dataType: 'json',
+			success: function(data) {
+				$('#count').html(data.count);
+				cship_location = data.ship;
+				offset = data.offset;
+				update();
+			},
+			complete: function() {
+				setTimeout(poll, 200);
+			}
+		});
+	}
+	poll();
+
+	/*_interval = setInterval(function() {
+		update();
+	}, 500);*/
+});
+
+function update() {
+	// Now set outside of this function by AJAX return.
+	//var offset = Math.floor(new Date().getTime() / 1000.0);
+
+	for(var i=0; i<visible_height; i++) {
+
+		var y = (offset + i) % board.length;
+
+		for(var x=0; x<board[y].length; x++) {
+			var ry = visible_height-i-1;
+
+			if(board[y][x] == 0) {
+				$("#cell_" + x + "_" + ry).css("background-color", "#DDD");
+			} else {
+				$("#cell_" + x + "_" + ry).css("background-color", "blue");
+			}
+		}
+	}
+
+	$(".ship").css("left", (ship_location*griddim)+"px");
+	$(".collective_ship").css("left", (cship_location*griddim)+"px");
+
+	console.log("#cell_" + ship_location + "_" + (visible_height-1) + "||" + $("#cell_" + ship_location + "_" + (visible_height-1)).css("background-color"));
+
+	if($("#cell_" + cship_location + "_" + (visible_height-1)).css("background-color") == "rgb(0, 0, 255)") {
+		gameover();
+	}
+
+	total_reward += reward_per_turn;
+	total_reward = Math.round(total_reward * 1000)/1000.0;
+	$(".score").html("$" + total_reward);
+}
+
+function gameover() {
+	clearInterval(_interval);
+
+	alert("GAME OVER MAN!");
+}
+
+</script>
+</head>
+<body>
+    <input type
+
+    <form> moneyEarned = "#mturk_form"; </form> 
+
+
+<div class="score">$0.000</div>
+
+<script>
+//document.write(Math.floor(new Date().getTime() / 1000.0) % board_width);
+</script>
+</body>
+</html>
